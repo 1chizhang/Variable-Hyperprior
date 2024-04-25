@@ -22,9 +22,9 @@ from einops.layers.torch import Rearrange
 from einops import rearrange, repeat
 import numpy as np
 from .gdn import GDN
-from DCNv4_op.DCNv4 import modules as opsm
-core_op = 'DCNv4'
-core_op = getattr(opsm, core_op)
+# from DCNv4_op.DCNv4 import modules as opsm
+# core_op = 'DCNv4'
+# core_op = getattr(opsm, core_op)
 
 __all__ = [
     "AttentionBlock",
@@ -41,7 +41,7 @@ __all__ = [
     "AttnFFN",
     "AttnFFN_LN",
     "ConvTransBlock",
-    "InternImageLayer"
+    # "InternImageLayer"
 ]
 
 
