@@ -19,7 +19,6 @@ import torch
 import os
 import math
 import torch.nn as nn
-# from Cheng2020Attention import Cheng2020Attention
 from ScaleHyperprior import ScaleHyperprior as test_model
 
 

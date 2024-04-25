@@ -1,59 +1,4 @@
-# Copyright 2020 InterDigital Communications, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-# This file may have been modified by Bytedance Inc. (“Bytedance Modifications”). All Bytedance Modifications are Copyright 2022 Bytedance Inc.
-
-
-# Copyright 2023 Bytedance Inc.
-# All rights reserved.
-# Licensed under the BSD 3-Clause Clear License (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     https://choosealicense.com/licenses/bsd-3-clause-clear/
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted (subject to the limitations in the disclaimer
-# below) provided that the following conditions are met:
-
-# * Redistributions of source code must retain the above copyright notice,
-#   this list of conditions and the following disclaimer.
-# * Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-# * Neither the name of InterDigital Communications, Inc nor the names of its
-#   contributors may be used to endorse or promote products derived from this
-#   software without specific prior written permission.
-
-# NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY
-# THIS LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-# CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-# NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-# PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-# OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-# OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from tqdm import tqdm
 import argparse
 import math
@@ -186,18 +131,6 @@ def train_one_epoch(
         aux_loss.backward()
         aux_optimizer.step()
 
-        # if i % 200 == 0:
-        #     print(
-        #         f"Train epoch {epoch} stage{stage}: ["
-        #         f"{i*len(d)}/{len(train_dataloader.dataset)}"
-        #         f" ({100. * i / len(train_dataloader):.0f}%)]"
-		# 		f" \tlambda: {model.lmbda[s]} s: {s:.3f}, scale: {model.Gain.data[s].detach().cpu().numpy():0.4f}, |"
-        #         f'\tLoss: {out_criterion["loss"].item():.3f} |'
-        #         f'\tMSE loss: {out_criterion["mse_loss"].item():.3f} |'
-        #         f'\tBpp loss: {out_criterion["bpp_loss"].item():.2f} |'
-        #         f"\tAux loss: {aux_loss.item():.2f}"
-        #         f"\tTime: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())}"
-        #     )
         pbar.update(len(d))
         pbar.set_description(
             f"Train epoch {epoch} stage{stage}: [{i*len(d)}/{len(train_dataloader.dataset)} "
@@ -336,7 +269,6 @@ def parse_args(argv):
     parser.add_argument("--refresh", default=0, type=int, help="refresh the setting of optimizer and epoch",
     )
     #add compile boolen
-    # parser.add_argument('--compile',action=argparse.BooleanOptionalAction, default=False)
     parser.add_argument('--compile',action='store_true', default=False)
     args = parser.parse_args(argv)
     return args
@@ -344,8 +276,6 @@ def parse_args(argv):
 
 def main(argv):
     args = parse_args(argv)
-    # import os
-    # os.environ['CUDA_VISIBLE_DEVICES'] = '1'
     if args.seed is not None:
         torch.manual_seed(args.seed)
         random.seed(args.seed)
@@ -434,12 +364,7 @@ def main(argv):
     if args.ste or stage>2:
         ste = True
         noise = False
-    #create a txt file to record test loss
-    
-    # txt_name = model_name+str(stage)+str(noise)+str(ste)+".txt"
-    # f = open(txt_name, "w")
-    # f.close()
-    # if the txt file exists, then copy it to another file
+
     txt_name = model_name+str(stage)+str(noise)+str(ste)+".txt"
     if os.path.exists(txt_name):
         shutil.copyfile(txt_name, txt_name+"_old.txt")
